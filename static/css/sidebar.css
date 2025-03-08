@@ -1,0 +1,136 @@
+/* Sidebar Styles */
+.sidebar {
+    width: 280px;
+    height: 100vh;
+    background: #F4F6F9; /* Lighter background color */
+    color: #407BFF; /* Text color changed to #407BFF */
+    position: fixed;
+    top: 0;
+    left: -280px;
+    transition: left 0.3s ease;
+    z-index: 1000;
+    padding: 1.5rem;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column; /* Stack children vertically */
+}
+
+.sidebar.active {
+    left: 0;
+}
+
+/* Sidebar Header */
+.sidebar-header {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgba(64, 123, 255, 0.3);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.sidebar-header h3 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: #407BFF;
+}
+
+/* Sidebar Menu */
+.sidebar-menu {
+    list-style: none;
+    padding-top: 1.5rem;
+    margin-bottom: auto; /* Pushes the footer to the bottom */
+}
+
+.sidebar-menu li {
+    margin: 1.25rem 0;
+    display: flex;
+    align-items: center;
+}
+
+.sidebar-menu a {
+    color: #407BFF;
+    text-decoration: none;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    border-radius: 0.5rem;
+    transition: background 0.3s ease, transform 0.2s ease;
+    gap: 0.75rem;
+}
+
+.sidebar-menu a:hover {
+    background: #D6E6FF;
+    transform: translateX(5px);
+}
+
+.sidebar-menu a.active {
+    background: #D6E6FF;
+    font-weight: 600;
+}
+
+/* Icon Styling */
+.sidebar-menu a img {
+    width: 20px;
+    height: 20px;
+    filter: none;
+}
+
+/* Close Button */
+.sidebar-close-btn {
+    background: none;
+    border: none;
+    color: #407BFF;
+    font-size: 1.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.sidebar-close-btn:hover {
+    color: #0056b3;
+}
+
+/* Sidebar Footer (Company ID) */
+.sidebar-footer {
+    padding-top: 1rem;
+    border-top: 1px solid rgba(64, 123, 255, 0.3);
+    text-align: center;
+    font-size: 0.9rem;
+    color: #407BFF;
+}
+
+/* Responsive Adjustments */
+@media (max-width: 767px) {
+    .sidebar {
+        width: 240px;
+        left: -240px;
+        padding: 1rem;
+    }
+
+    .sidebar.active {
+        left: 0;
+    }
+
+    .sidebar-header h3 {
+        font-size: 1.25rem;
+    }
+
+    .sidebar-menu a {
+        font-size: 1rem;
+        padding: 0.6rem 0.8rem;
+    }
+
+    .sidebar-footer {
+        font-size: 0.8rem;
+    }
+}
+
+/* Accessibility Enhancements */
+.sidebar-menu a:focus {
+    outline: 2px solid #407BFF;
+    outline-offset: 2px;
+    background: #D6E6FF;
+}

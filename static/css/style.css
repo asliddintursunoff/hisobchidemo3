@@ -1,0 +1,386 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap');
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    color: #333;
+    line-height: 1.6;
+    max-width: 1440px;
+    margin: auto;
+}
+
+.container {
+    max-width: 1440px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+/* Header Styles */
+header {
+    background-color: #fff;
+    padding: 20px 0;
+    position: relative;
+}
+
+header .container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+}
+
+.logo-img {
+    height: 80px;
+}
+
+.menu-toggle {
+    display: none; /* Hidden by default on desktop */
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 10px;
+}
+
+.hamburger {
+    display: block;
+    width: 25px;
+    height: 3px;
+    background: #333;
+    position: relative;
+}
+
+.hamburger::before,
+.hamburger::after {
+    content: '';
+    width: 25px;
+    height: 3px;
+    background: #333;
+    position: absolute;
+    left: 0;
+    transition: all 0.3s ease;
+}
+
+.hamburger::before {
+    top: -8px;
+}
+
+.hamburger::after {
+    bottom: -8px;
+}
+
+.nav-menu {
+    transition: all 0.3s ease;
+}
+
+nav ul {
+    list-style: none;
+    display: flex;
+    gap: 60px;
+}
+
+nav ul li a {
+    text-decoration: none;
+    color: #333;
+    font-weight: 300;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #407BFF;
+}
+
+.log-reg-buttons {
+    display: flex;
+    gap: 10px;
+}
+
+.login-button, .button-2, .cta-btn {
+    border-radius: 35px;
+    padding: 10px 25px;
+    font-size: 15px;
+    font-weight: lighter;
+    border: 1px solid #407BFF;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.login-button {
+    background: #f5f5f5;
+    color: #407BFF;
+}
+
+.button-2, .cta-btn {
+    background: #407BFF;
+    color: #f5f5f5;
+}
+
+.login-button:hover, .button-2:hover, .cta-btn:hover {
+    background: #3A80D2;
+    color: #fff;
+}
+
+/* Hero Section */
+.hero .container {
+    display: flex;
+    align-items: center;
+    gap: 40px;
+}
+
+.hero-content {
+    flex: 1;
+}
+
+.hero-text34 {
+    font-size: 64px;
+    font-weight: 400;
+}
+
+.hero-text34 span {
+    color: #407BFF;
+}
+
+.hero-text2 {
+    font-size: 32px;
+    font-weight: 300;
+    margin-bottom: 30px;
+    max-width: 550px;
+}
+
+.hero-image {
+    flex: 1;
+}
+
+.hero-icon {
+    width: 100%;
+    height: auto;
+}
+
+/* Services Section */
+.services {
+    padding: 60px 0;
+    text-align: center;
+}
+
+.services h2 {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+.services-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 20px;
+}
+
+.service-item h3 {
+    font-size: 18px;
+    font-weight: 500;
+}
+
+.icon-placeholder img {
+    width: 60px;
+    height: 60px;
+}
+
+/* Why Us Section */
+.why-us {
+    padding: 80px 0;
+    text-align: center;
+}
+
+.subnegabiz {
+    font-size: 36px;
+    font-weight: 700;
+    margin-bottom: 60px;
+}
+
+.card-container {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+}
+
+.flip-card {
+    width: 300px;
+    height: 420px;
+    perspective: 1000px;
+}
+
+.flip-card-inner {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.6s;
+    transform-style: preserve-3d;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.flip-card:hover .flip-card-inner {
+    transform: rotateX(180deg);
+}
+
+.flip-card-front, .flip-card-back {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    backface-visibility: hidden;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 1rem;
+}
+
+.flip-card-front {
+    background: #fff;
+}
+
+.flip-card-back {
+    background: #0d6efd;
+    color: #fff;
+    transform: rotateX(180deg);
+}
+
+.card-icon {
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+}
+
+/* Pricing Section */
+.pricing {
+    padding: 80px 0;
+    text-align: center;
+}
+
+.pricing h2 {
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 40px;
+}
+
+.pricing-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 30px;
+}
+
+.pricing-item {
+    background: #F5F8FD;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: left;
+}
+
+/* Footer Styles */
+footer {
+    background: #fff;
+    padding: 40px 0;
+    border-top: 1px solid #ddd;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    flex-wrap: wrap;
+}
+
+/* Responsive Design */
+@media (max-width: 1024px) {
+    .hero .container, .services-grid, .pricing-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .card-container {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .hero-text34 {
+        font-size: 48px;
+    }
+
+    .hero-text2 {
+        font-size: 24px;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    .menu-toggle {
+        display: block;
+    }
+   .logo{
+
+    width:100%;
+    display:flex;
+    flex-direction:row;
+    justify-content: space-between;
+
+   }
+
+    .nav-menu {
+        display: none;
+        width: 100%;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        background: #fff;
+        padding: 20px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .logo-img{
+
+margin-bottom:15px;
+
+    }
+
+    .nav-menu.active {
+        display: block;
+    }
+
+    nav ul {
+        flex-direction: column;
+        gap: 20px;
+    }
+
+    .log-reg-buttons {
+        flex-direction: column;
+        width: 100%;
+        gap: 15px;
+    }
+
+    .hero-text34 {
+        font-size: 36px;
+    }
+
+    .hero-text2 {
+        font-size: 18px;
+    }
+
+    .services-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    .footer-social, .footer-contact {
+        align-items: center;
+    }
+}

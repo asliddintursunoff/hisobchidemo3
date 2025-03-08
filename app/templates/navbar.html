@@ -1,0 +1,44 @@
+{% load static %}
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h3>{{ request.user.company.name}}</h3>
+            <button class="sidebar-close-btn">&times;</button> <!-- Close button -->
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="{% url "adminpage" %}" class="nav-item"><img src="{% static "icons/menu.png" %}" alt="Dashboard"> Asosiy</a></li>
+            <li><a href="{% url "adminpage" %}" class="nav-item"><img src="{% static "icons/salary.png" %}" alt="Ishchilar"> Oylik</a></li>
+            <li><a href="{% url "showworkers" %}" class="nav-item"><img src="{% static "icons/group.png" %}"> Ishchilar</a></li>
+            <li><a href="#" class="nav-item"><img src="{% static "icons/workerexpanse.png" %}" alt="Hisobotlar"> Ishchilarning harajatlari</a></li>
+            <li><a href="#" class="nav-item"><img src="{% static "icons/images/malumotlar.png" %}" alt="Sozlamalar"> Korxona malumotlari</a></li>
+        </ul>
+        <!-- Added Company ID Section -->
+        <div class="sidebar-footer">
+            <span>Korxona ID: {{ request.user.company.unique_id }}</span>
+        </div>
+    </nav>
+{% block content %}
+
+{% endblock content %} 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const sidebar = document.querySelector(".sidebar");
+        const toggleBtn = document.getElementById("sidebarToggle");
+        const closeBtn = document.querySelector(".sidebar-close-btn");
+
+        toggleBtn.addEventListener("click", function () {
+            sidebar.classList.toggle("active");
+        });
+
+        closeBtn.addEventListener("click", function () {
+            sidebar.classList.remove("active");
+        });
+    });
+</script>
+</body>
+</html>

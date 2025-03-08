@@ -1,0 +1,172 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ro'yxatdan O'tish</title>
+  <link rel="stylesheet" href="{% static "css/stylereg.css" %}">
+  <style>
+  .hidden { 
+  display: none; 
+}
+  </style>
+</head>
+<body>
+
+
+
+  <div class="container">
+    <h2>Ro'yxatdan O'tish</h2>
+    
+      <!-- Rol tanlash slayderi -->
+      <div class="role-slider">
+        <div>
+          <input type="radio" id="admin" name="role" value="admin" checked>
+          <label class="slider-option" for="admin">Admin</label>
+        </div>
+        <div>
+          <input type="radio" id="worker" name="role" value="worker">
+          <label class="slider-option" for="worker">Xodim</label>
+        </div>
+      </div>
+       <div id="admin-content">
+        <h2>Adminlar uchun</h2>
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+        <label for="company">* Korxona nomi</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/building.png" %}" alt="icon"></span>
+            {{ companyForm.name }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="first_name">* Ism</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/name.png" %}" alt="icon"></span>
+            {{userCreationForm.first_name }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="last_name">* Familiya</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/building.png" %}" alt="icon"></span>
+            {{userCreationForm.last_name }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="username">* Username</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/username.png" %}" alt="icon"></span>
+            {{userCreationForm.username }}
+        </div>
+    </div>
+
+   
+
+    <div class="form-group">
+        <label for="password1">* Parol</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/lock.png" %}" alt="icon"></span>
+            {{userCreationForm.password1 }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password2">* Parolni tasdiqlang</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/lock.png" %}" alt="icon"></span>
+            {{userCreationForm.password2 }}
+        </div>
+    </div>
+
+    <button type="submit" name="user_type" value="admin" class="btn btn-primary">Ro'yxatdan O'tish</button>
+</form>
+
+      
+    </div>
+
+    <!-- Data for Worker -->
+    <div id="worker-content" class="hidden">
+    <h2>Xodimlar uchun</h2>
+ <form method="post">
+              {% csrf_token %}
+
+    <div class="form-group">
+        <label for="company">* Korxona uchun berilgan 4 xonali raqamni kiriting</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/building.png" %}" alt="icon"></span>
+            {{ company.code }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="first_name">* Ism</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/name.png" %}" alt="icon"></span>
+            {{workerform.name }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="last_name">* Familiya</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/building.png" %}" alt="icon"></span>
+            {{workerform.last_name }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="username">* Username</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/username.png" %}" alt="icon"></span>
+            {{worker.username }}
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="password1">* Parol</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/lock.png" %}" alt="icon"></span>
+            {{worker.password1 }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password2">* Parolni tasdiqlang</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/lock.png" %}" alt="icon"></span>
+            {{worker.password2 }}
+        </div>
+    </div>
+
+    <button type="submit"  name="user_type" value="worker"class="btn btn-primary">Ro'yxatdan O'tish</button>
+</form>
+    </div>
+
+   
+  </div>
+  </div>
+   <script>
+        document.querySelectorAll('input[name="role"]').forEach((radio) => {
+            radio.addEventListener('change', function() {
+                if (this.value === "admin") {
+                    document.getElementById("admin-content").classList.remove("hidden");
+                    document.getElementById("worker-content").classList.add("hidden");
+                } else {
+                    document.getElementById("admin-content").classList.add("hidden");
+                    document.getElementById("worker-content").classList.remove("hidden");
+                }
+            });
+        });
+    </script>
+
+</body>
+</html>
