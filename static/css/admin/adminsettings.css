@@ -1,0 +1,404 @@
+/* Reset default margins and padding */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    padding-top:5px;
+}
+
+body {
+    background-color: #f5f5f5;
+    font-family: 'Roboto', sans-serif;
+    font-size: 18px;
+    line-height: 1.6;
+    color: #333; /* Improved text contrast */
+}
+
+main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    max-width: 1440px;
+    margin: 20px auto;
+    gap: 25px; /* Slightly increased gap for better separation */
+    padding: 25px; /* Increased padding for breathing room */
+    background-color: #fff;
+    border-radius: 12px; /* Softer corners */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05); /* Softer shadow */
+}
+
+/* Section styling */
+.sect1, .sect2 {
+    display: flex;
+    flex-direction: column;
+    gap: 20px; /* Increased gap for clarity */
+    padding: 25px;
+}
+.sect2{
+gap:30px;
+
+
+
+}
+
+/* Individual items */
+.sect-item1, .sect-item2, .sect-item3, 
+.sect-item4, .sect-item5, .sect-item7 {
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.2s ease; /* Smooth transitions */
+}
+
+.sect-item1:hover, .sect-item2:hover, .sect-item3:hover,
+.sect-item4:hover, .sect-item5:hover, .sect-item7:hover {
+    background-color: #ececec; /* Subtle hover feedback */
+}
+
+/* Buttons container */
+.sect1-buttons {
+    display: flex;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Buttons */
+.butt1, .butt2, .sub-sect2-1 button {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background-color: #407bff;
+    color: #fff;
+    font-weight: 500;
+}
+
+.butt1:hover, .butt2:hover, .sub-sect2-1 button:hover {
+    background-color: #3266cc;
+    transform: translateY(-2px); /* Subtle lift effect */
+}
+
+/* Secondary button variation */
+.butt2 {
+    background-color: #fff;
+    color: #407bff;
+    border: 2px solid #407bff;
+}
+
+.butt2:hover {
+    background-color: #407bff;
+    color: #fff;
+}
+.butt1{
+max-width:100px;
+
+
+
+}
+
+/* Sub-section 2-1 */
+.sub-sect2-1 {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+    background-color: #f5f5f5;
+    padding: 15px;
+    border-radius: 8px;
+}
+
+/* Profile image container */
+.sect2-image {
+    position: relative;
+    width: 250px;
+    height: 250px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: auto; /* Centered with spacing */
+}
+
+/* Profile image */
+.sect2-image img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #f5f5f5;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* Plus button */
+.plus-button {
+    position: absolute;
+    bottom: 8px;
+    right: 8px;
+    width: 36px; /* Slightly larger for better clickability */
+    height: 36px;
+    background-color: #407bff;
+    color: #fff;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 24px;
+    font-weight: bold;
+    cursor: pointer;
+    border: none;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    transition: all 0.3s ease;
+}
+
+.plus-button:hover {
+    background-color: #3266cc;
+    transform: scale(1.1); /* Visual feedback */
+}
+
+
+.more,
+.change,
+.delete {
+    border: none;
+    background-color: #ffffff;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.more {
+    color: #357ABD;
+}
+
+.change {
+    color: #357ABD;
+}
+
+.delete {
+    color: #e63946;
+}
+
+.more:hover,
+.change:hover {
+    background-color: #e6f0ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.delete:hover {
+    background-color: #ffe6e6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.more img,
+.change img,
+.delete img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.subheader {
+    max-width:1440px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin: auto;
+    height:70px;
+    
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    background: #407BFF;
+    padding: 0.75rem 1rem;
+    color: white;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: space-around;
+}
+
+.author {
+    font-size: 14px;
+}
+
+.menu-btn {
+    background: #357ABD;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+    font-size: 20px;
+}
+
+.menu-btn:hover {
+    background: #0056b3;
+}
+
+.logo {
+    font-size: 1rem;
+    flex-grow: 1;
+    text-align: center;
+}
+
+
+/* Modal styles */
+.modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1000;
+}
+
+.modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    width: auto;
+
+    max-width: 90%;
+    display:flex;
+    flex-direction:column;
+   
+   
+
+    
+    
+}
+.sub-modal-content{
+display:flex;
+flex-direction:row;
+gap:10px;
+
+}
+.modal-content p {
+    margin: 10px 0;
+    color: #333;
+}
+
+.modal-content a {
+    color: #407bff;
+    text-decoration: none;
+}
+
+.modal-content a:hover {
+    text-decoration: underline;
+}
+.prices{
+padding:5px 10px;
+background:#f5f5f5;
+border-radius: 10px;
+
+
+
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+    main {
+        grid-template-columns: 1fr;
+        margin: 15px;
+        padding: 20px;
+    }
+    
+    .sect1, .sect2 {
+        padding: 20px;
+    }
+    
+    .sect1-buttons {
+        flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+    
+    .butt1, .butt2, .sub-sect2-1 button {
+        width: 100%; /* Full width buttons on mobile */
+    }
+
+   
+}
+
+.inputs {
+    width: 4rem;
+    padding: 0.25rem;
+    border: 1px solid #ddd;
+    border-radius: 0.3rem;
+    text-align: center;
+}.search-input {
+    border: none;
+    outline: none;
+    
+    padding: 15px;
+    font-size: 1rem;
+    flex: 1;
+    background-color: #f5f5f5;
+    border-radius: 0.3rem;
+}input, select {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ddd;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+}
+.sect2 {
+    display: flex;
+    flex-direction: column;
+    gap: 5px; /* Reduces spacing between inputs */
+    
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 2px; /* Reduces space below the label */
+}
+.sect1-buttons {
+    display: flex;
+    justify-content: flex-end; /* Moves buttons to the right */
+    align-items: center;
+    gap: 10px; /* Adds spacing between buttons */
+    width: 100%; /* Ensures it takes full width */
+}
+
+.chiqish {
+    background-color: rgb(255, 116, 116); /* Red background */
+    color: white; /* White text */
+    border: none;
+    padding: 10px 20px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 5px; /* Rounded edges */
+    transition: 0.3s;
+}
+
+.chiqish:hover {
+   
+    background-color: #ffe6e6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15); /* Darker red on hover */
+}

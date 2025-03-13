@@ -1,0 +1,282 @@
+{% load static %}
+{% load crispy_forms_tags %}
+
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ro'yxatdan O'tish</title>
+  <link rel="stylesheet" href="{% static "css/stylereg.css" %}">
+  <style>
+  .hidden { 
+  display: none; 
+}
+.form-group label {
+    margin-left: 15px; /* Adjust the value as needed */
+}
+.signup-img {
+    display: block;
+    margin: 0 auto;
+    width: 150px; /* Adjust size as needed */
+    height: auto;
+}
+ .flash-messages {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        max-width: 250px;
+    }
+
+    /* Base styles for messages */
+    .flash-message {
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+        font-size: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+        transition: opacity 0.5s ease-in-out;
+    }
+
+    /* Success Message */
+    .flash-success {
+        background-color: #d4edda; /* Light green */
+        color: #155724;
+        border-left: 4px solid #28a745;
+    }
+
+    /* Error Message */
+    .flash-error {
+        background-color: #f8d7da; /* Light red */
+        color: #721c24;
+        border-left: 4px solid #dc3545;
+    }
+
+    /* Warning Message */
+    .flash-warning {
+        background-color: #fff3cd; /* Light yellow */
+        color: #856404;
+        border-left: 4px solid #ffc107;
+    }
+
+    /* Info Message */
+    .flash-info {
+        background-color: #d1ecf1; /* Light blue */
+        color: #0c5460;
+        border-left: 4px solid #17a2b8;
+    }
+
+    /* Fade-out effect */
+    .fade-out {
+        opacity: 0;
+    }
+
+  </style>
+</head>
+<body>
+
+  
+
+
+  <div class="container">
+  <div class="flash-messages">
+    {% for message in messages %}
+        <div class="flash-message flash-{{ message.tags }}">
+            {{ message }}
+        </div>
+    {% endfor %}
+    </div>
+  <img src="{% static 'icons/sitelogo.png' %}" alt="Ro'yxatdan O'tish" class="signup-img">
+    <h2>Ro'yxatdan O'tish</h2>
+    
+      <!-- Rol tanlash slayderi -->
+      {% comment %} <div class="role-slider">
+        <div>
+          <input type="radio" id="admin" name="role" value="admin" checked>
+          <label class="slider-option" for="admin">Admin</label>
+        </div>
+        <div>
+          <input type="radio" id="worker" name="role" value="worker">
+          <label class="slider-option" for="worker">Xodim</label>
+        </div>
+      </div> {% endcomment %}
+       <div id="admin-content">
+        <h2></h2>
+  <form method="post">
+    {% csrf_token %}
+
+    <div class="form-group">
+    <label class="ms-2"for="company">Korxona nomi</label>
+    <div class="input-group">
+        <span class="input-group-text">
+            <img src="{% static 'icons/building.png' %}" alt="icon">
+        </span>
+        {{ companyForm.name }}
+    </div>
+</div>
+
+    <div class="form-group">
+        <label for="first_name">Ism</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/name.png" %}" alt="icon"></span>
+            {{userCreationForm.first_name }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="last_name">Familiya</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/name.png" %}" alt="icon"></span>
+            {{userCreationForm.last_name }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="phone_number">Telefon raqam</label>
+        <div class="input-group">
+            <span class="input-group-text">
+                <img src="{% static 'icons/phone.png' %}" alt="icon">
+            </span>
+            <input type="tel" class="form-control" id="phone_number" name="phone_number" 
+                pattern="^\+998[0-9]{9}$" placeholder="+998 XX XXX-XX-XX" maxlength="13" required>
+        </div>
+        <small class="text-danger" id="phoneError" style="display: none;">Invalid phone number format!</small>
+    </div>
+
+   
+        <div class="form-group">
+            <label for="password1">Parol</label>
+            <div class="input-group">
+                <span class="input-group-text"><img src="{% static 'icons/lock.png' %}" alt="icon"></span>
+                <input type="password" name="password1" class="form-control" placeholder="Parolni kiriting" required>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="password2">Parolni tasdiqlang</label>
+            <div class="input-group">
+                <span class="input-group-text"><img src="{% static 'icons/lock.png' %}" alt="icon"></span>
+                <input type="password" name="password2" class="form-control" placeholder="Parolni tasdiqlang" required>
+            </div>
+        </div>
+
+    <button type="submit" name="user_type" value="admin" class="btn btn-primary">Ro'yxatdan O'tish</button>
+</form>
+
+      
+    </div>
+
+    {% comment %} <!-- Data for Worker -->
+    <div id="worker-content" class="hidden">
+    <h2>Xodimlar uchun</h2>
+ <form method="post">
+              {% csrf_token %}
+
+    <div class="form-group">
+        <label for="company">* Korxona uchun berilgan 4 xonali raqamni kiriting</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/building.png" %}" alt="icon"></span>
+            {{ company.code }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="first_name">* Ism</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/name.png" %}" alt="icon"></span>
+            {{workerform.name }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="last_name">* Familiya</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/name.png" %}" alt="icon"></span>
+            {{workerform.last_name }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="username">* Username</label>
+        <div class="input-group">
+            <span class="input-group-text">
+                <img src="{% static 'icons/phone.jpg' %}" alt="icon">
+            </span>
+            <input type="tel" class="form-control" id="phone_number" name="phone_number" 
+                pattern="^\+998[0-9]{9}$" placeholder="+998 XX XXX-XX-XX" maxlength="13" required>
+        </div>
+    </div>
+
+
+    <div class="form-group">
+        <label for="password1">* Parol</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/lock.png" %}" alt="icon"></span>
+            {{worker.password1 }}
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label for="password2">* Parolni tasdiqlang</label>
+        <div class="input-group">
+            <span class="input-group-text"><img src="{% static "icons/lock.png" %}" alt="icon"></span>
+            {{worker.password2 }}
+        </div>
+    </div>
+
+    <button type="submit"  name="user_type" value="worker"class="btn btn-primary">Ro'yxatdan O'tish</button>
+</form>
+    </div> {% endcomment %}
+
+   
+  </div>
+  </div>
+   <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    const phoneInput = document.getElementById("phone_number");
+    const phoneError = document.getElementById("phoneError");
+
+    phoneInput.addEventListener("input", function () {
+        // Allow only numbers and + at the start
+        phoneInput.value = phoneInput.value.replace(/[^0-9+]/g, "");
+
+        // Ensure it starts with +998
+        if (!phoneInput.value.startsWith("+998")) {
+            phoneInput.value = "+998";
+        }
+
+        // Validate format
+        if (!/^\+998\d{9}$/.test(phoneInput.value)) {
+            phoneError.style.display = "block";
+        } else {
+            phoneError.style.display = "none";
+        }
+    });
+});
+
+        document.querySelectorAll('input[name="role"]').forEach((radio) => {
+            radio.addEventListener('change', function() {
+                if (this.value === "admin") {
+                    document.getElementById("admin-content").classList.remove("hidden");
+                    document.getElementById("worker-content").classList.add("hidden");
+                } else {
+                    document.getElementById("admin-content").classList.add("hidden");
+                    document.getElementById("worker-content").classList.remove("hidden");
+                }
+            });
+        });
+          setTimeout(() => {
+        document.querySelectorAll('.flash-message').forEach((msg) => {
+            msg.classList.add('fade-out');
+            setTimeout(() => msg.remove(), 500);
+        });
+    }, 3000);
+
+    </script>
+
+</body>
+</html>

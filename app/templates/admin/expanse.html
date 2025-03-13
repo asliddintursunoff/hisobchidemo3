@@ -1,0 +1,444 @@
+{% extends "navbar.html" %}
+{% block content %}
+{% load custom_filters %}
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel-like Task Table</title>
+    <link rel="stylesheet" href="{% static "css/admin/showworkers.css" %}">
+    <link rel="stylesheet" href="{% static "css/admin/expanse.css" %}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <style>.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000; /* Ensures it's on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark transparent overlay */
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    width: 400px; /* Adjust width */
+    max-width: 90%; /* Makes it responsive */
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out; /* Smooth opening animation */
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Animation for smooth fade-in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+.close:hover {
+    color: red;
+}
+td {
+    height: 5px !important;
+    padding: 0 !important;
+    font-size: 18px; /* Adjust if needed */
+}
+td {
+    padding: 0; 
+}
+</style>
+</head>
+<body>
+<input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+<main class="main-content">
+        <!-- Header -->
+        <header class="subheader">
+            <div class="navbar">
+                <button id="sidebarToggle"class="menu-btn">☰</button>
+                <div class="author">Ism Familiyasi</div>
+                <a href="{% url 'adminpage'  %}"class="logo">Ortga qaytish</a>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="Qidirish...">
+                <button class="search-button">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/search.png" alt="Qidirish">
+                </button>
+
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div class="container">
+            <!-- Table Section -->
+            <section class="table-container">
+                <div class="text-excel">
+                    <h2>
+                      <img class="add-workers-icon" src="{% static "icons/expanse.png" %}" alt="Add Workers">
+                        {{request.user.company.name}} korxonasining harajatlar ro'yhati
+                    </h2>
+                     <button type="button" class="adder">Ustun qo'shish</button>
+                </div>
+    <div class="table-container">
+                 <table border="1" id="expanseTable">
+    <thead>
+        <tr>
+           <th style="width: 5px; min-width: 5px; max-width: 5px; padding: 0; text-align: center;">№</th>
+            <th style="width: 50px;">№</th>
+            <th style="width: 65px;">Date</th>
+                        {% for expanse_name in expanse_names %}
+                            <th style="white-space: nowrap; text-align: center;">
+                <span style="display: inline-flex; align-items: center; gap: 5px;">
+                    {{ expanse_name.expanse_name }}
+                    
+                    <a href="{% url "delete_expanse_name" expanse_name.id %}"><button type="button" class="delete" style="width: 25px; height: 25px; border: none; " data-id="{{ date.date.id }}" title="Royhattan o'chirish">
+                        <img style="width: 18px; height: 18px;" src="{% static 'icons/delete.webp' %}" alt="Royhattan o'chirish">
+                    </button></a>
+                </span>
+            </th>
+
+            {% endfor %}
+        </tr>
+    </thead>
+    <tbody id="table-body">
+        {% for date in dates %}
+            
+            <tr style=" height: 30px;">
+                <td style="text-align: center; vertical-align: middle;"><a href="{% url "delete_expanse_date" date.id %}"> <button type="button" class="delete" style="width: 30px; height: 30px; border: none; display: flex; align-items: center; justify-content: center; background: none; padding: 0;">
+            <img style="width: 18px; height: 18px;" src="{% static 'icons/delete.webp' %}" alt="Royhattan o'chirish">
+        </button></a></td>
+                <td>{{ forloop.counter }}</td>
+                <td >
+                    <input style="height: 20px;
+    font-size: 13px;" type="date" class="date-input"
+                        value="{{ date.date|date:'Y-m-d' }}"
+                        data-date-id="{{ date.id }}">
+                </td>
+                        {% for expanse_name in expanse_names %}
+                            <td contenteditable="true"
+            data-expanse-key="{{ expanse_name.id }}"
+            {% for ex in expanse %}
+                {% if ex.expanse_key.id == expanse_name.id and ex.date.id == date.id and forloop.first %}
+                    data-expanse-id="{{ ex.id }}"
+                {% endif %}
+            {% endfor %}>
+
+                        {% for ex in expanse %}
+                            {% if ex.expanse_key.id == expanse_name.id and ex.date.id == date.id %}
+                                {{ ex.value }}
+                            {% endif %}
+                        {% endfor %}
+                    </td>
+                    
+                {% endfor %}
+            </tr>
+        {% endfor %}
+        <!-- Empty row for new entries -->
+        <tr>
+            <td></td>
+            <td></td>
+            <td><input type="date" class="date-input" value="" style="height: 20px;
+    font-size: 13px;"></td>
+            {% for _ in expanse_names %}
+                <td contenteditable="true" data-expanse-key=""></td>
+            {% endfor %}
+        </tr>
+        <tr>
+            <th colspan="2">Jami</th>
+         
+            <td>Sana</td>
+            {% for name in expanse_names%}
+            {% for t in total %}
+                {% if name  == t.expanse_name%}
+                {% if t.type == "kirim" or t.type == "chiqim" %}
+               <td  style="background-color: {% if t.type == "kirim" %}#bef0b4{% else %}#f0b4b4{% endif %};" data-expanse-name="{{ t.expanse_name }}">{{ t.expanse_total }}</td>
+                {% else %}
+                <td></td>
+                {% endif %}
+                {% endif %}
+            {% endfor %}
+            {% endfor %}
+        </tr>
+    </tbody>
+</table>
+
+    </div>
+      
+            </section>
+        </div>
+    </main>
+
+
+    <!-- Column Modal -->
+    <div style="display:none" id="columnModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h3>Add New Column</h3>
+            <input type="text" id="columnName" placeholder="Column Name" required>
+            <select id="columnType">
+                <option value="istisno">istisno</option>
+                <option value="kirim">kirim</option>
+                <option value="chiqim">chiqim</option>
+            </select>
+            <button id="confirmAddColumn">Yangi ustun</button>
+        </div>
+    </div>
+<script>
+
+
+ window.onload = function () {
+        window.scrollTo(0, document.body.scrollHeight);
+    };
+
+
+document.getElementById("search-input").addEventListener("keyup", function () {
+    let searchQuery = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#table-body tr");
+
+    rows.forEach(row => {
+        let rowText = row.textContent.toLowerCase();
+        row.style.display = rowText.includes(searchQuery) ? "" : "none";
+    });
+});
+
+//values
+document.addEventListener("DOMContentLoaded", function () {
+    const tbody = document.querySelector("tbody");
+
+    // Handle input changes in table
+    tbody.addEventListener("input", function (event) {
+        const cell = event.target;
+        const row = cell.closest("tr");
+
+        // Handle Date Input Change
+        if (cell.classList.contains("date-input")) {
+            const dateId = cell.dataset.dateId || null;
+            const newDate = cell.value;
+
+            console.log("Updating date:", { dateId, newDate });
+
+            fetch("/update-date/", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", "X-CSRFToken": getCSRFToken() },
+                body: JSON.stringify({ date_id: dateId, date_value: newDate }),
+            })
+            .then(response => response.json())
+            .then(result => {
+                if (result.success) {
+                    cell.dataset.dateId = result.date_id;
+                    updateRowWithDateId(row, result.date_id);
+                } else {
+                    console.error("Date update failed:", result.error);
+                }
+            })
+            .catch(error => console.error("Request error:", error));
+            location.reload();
+        }
+
+      if (cell.tagName === "TD" && cell.hasAttribute("contenteditable")) {
+        const dateInput = row.querySelector(".date-input");
+        let dateId = dateInput ? dateInput.dataset.dateId : null;
+
+        if (!dateId || dateId === "") {
+            console.warn("Skipping update, date_id is missing.");
+            return;
+        }
+
+        let expanseId = cell.dataset.expanseId || null;
+        const expanseKey = cell.dataset.expanseKey;
+        const expanseValue = cell.textContent.trim();
+
+        if (!expanseKey) {
+            console.warn("Skipping update, missing expanseKey.");
+            return;
+        }
+
+        // 🔥 Extra Debugging Step: Check if expanseId is valid
+        if (expanseId && isNaN(parseInt(expanseId))) {
+            console.warn("Invalid expanseId detected, resetting to null.");
+            expanseId = null;
+        }
+
+        console.log("Before sending:", { dateId, expanseId, expanseKey, expanseValue });
+
+        fetch("/update-expanse/", {
+            method: "POST",
+            headers: { "Content-Type": "application/json", "X-CSRFToken": getCSRFToken() },
+            body: JSON.stringify({
+                date_id: dateId,
+                expanse_id: expanseId && expanseId !== "" ? expanseId : null, // 🔥 Only send if valid
+                expanse_key: expanseKey,
+                expanse_value: expanseValue,
+            }),
+        })
+        .then(response => response.json())
+        .then(result => {
+            console.log("Server Response:", result);
+
+            if (result.success) {
+                if (!expanseId || expanseId === "null") {  
+                    // 🔥 Only assign ID if it's a new record
+                    cell.dataset.expanseId = result.expanse_id;
+                    console.log("New Expanse ID assigned:", result.expanse_id);
+                }
+            } else {
+                console.error("Expanse update failed:", result.message);
+            }
+        })
+        .catch(error => console.error("Request error:", error));
+    }
+    });
+    
+    // Function to update all expanse fields with the new date_id
+    function updateRowWithDateId(row, dateId) {
+        row.querySelectorAll("td[contenteditable]").forEach(td => {
+            td.dataset.dateId = dateId;
+        });
+    }
+
+    // Ensure last row remains empty & auto-adds a new row when needed
+    // Ensure last row remains empty & auto-adds a new row when needed
+tbody.addEventListener("input", function () {
+    const rows = tbody.querySelectorAll("tr");
+    const lastDataRow = rows[rows.length - 2]; // Second-last row (before "Jami")
+    const totalRow = rows[rows.length - 1]; // "Jami" row
+
+    const isEmpty = [...lastDataRow.children].slice(1).every(td => {
+        return td.textContent.trim() === "" && (!td.querySelector("input") || td.querySelector("input").value === "");
+    });
+
+    if (!isEmpty) {
+        const newRow = lastDataRow.cloneNode(true);
+
+        // Reset the date input in the new row
+        const newDateInput = newRow.querySelector(".date-input");
+        if (newDateInput) {
+            newDateInput.value = "";
+            newDateInput.dataset.dateId = "";
+        } else {
+            const dateCell = newRow.children[1];
+            dateCell.innerHTML = `<input type="date" class="date-input" value="" data-date-id="">`;
+        }
+
+        // Clear all text content and reset dataset attributes
+        newRow.querySelectorAll("td[contenteditable]").forEach(td => {
+            td.textContent = "";
+            td.dataset.expanseId = "";
+            if (!td.dataset.expanseKey) {
+                td.dataset.expanseKey = td.cellIndex; // Assign a unique key if missing
+            }
+        });
+
+        tbody.insertBefore(newRow, totalRow); // Insert before "Jami" row
+    }
+});
+
+
+    // Function to get CSRF Token
+    function getCSRFToken() {
+        return document.querySelector("[name=csrfmiddlewaretoken]")?.value || "";
+    }
+});
+
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", function () {
+    const modal = document.getElementById("columnModal");
+    const addButton = document.querySelector(".adder");
+    const closeButton = modal.querySelector(".close");
+    const confirmButton = document.getElementById("confirmAddColumn");
+
+    // Open modal when clicking "Ustun qo'shish"
+    addButton.addEventListener("click", function () {
+        modal.style.display = "flex"; // Change to "flex" to allow centering
+    });
+
+    // Close modal when clicking "×"
+    closeButton.addEventListener("click", function () {
+        modal.style.display = "none";
+    });
+
+    // Close modal if user clicks outside of the modal-content
+    window.addEventListener("click", function (event) {
+        if (event.target === modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    // Send data to backend when clicking "Yangi ustun"
+    confirmButton.addEventListener("click", function () {
+        const columnName = document.getElementById("columnName").value.trim();
+        const columnType = document.getElementById("columnType").value;
+
+        if (!columnName) {
+            alert("Ustun nomini kiriting!");
+            return;
+        }
+
+        fetch("/add-column/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-CSRFToken": getCSRFToken(),
+            },
+            body: JSON.stringify({
+                column_name: columnName,
+                column_type: columnType
+            }),
+        })
+        .then(response => response.json())
+        .then(result => {
+            if (result.success) {
+                console.log("Ustun muvaffaqiyatli qo'shildi!");
+                modal.style.display = "none"; // Close modal after successful request
+                location.reload(); // Refresh to show new column
+            } else {
+                alert("Xatolik yuz berdi: " + result.message);
+            }
+        })
+        .catch(error => console.error("Request error:", error));
+    });
+
+    // Function to get CSRF Token
+    function getCSRFToken() {
+        return document.querySelector("[name=csrfmiddlewaretoken]")?.value || "";
+    }
+});
+
+    </script>
+
+
+
+</body>
+</html>
+{% endblock content %}

@@ -1,0 +1,105 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/admin/showworkers.css" %}">
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+</head>
+<body>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="subheader">
+            <div class="navbar">
+                <button class="menu-btn">☰</button>
+                <div class="author">Ism Familiyasi</div>
+                <div class="logo">Wokers Page Hush Kelibsiz</div>
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Qidirish...">
+                <button class="search-button">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/search.png" alt="Qidirish">
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div class="container">
+            <!-- Table Section -->
+            <section class="table-container">
+                <div class="text-excel">
+                    <h2>
+                      <img class="add-workers-icon" src="{% static "icons/group.png"%}" alt="Add Workers">
+                        Coca Cola, kompaniyasi to'liq ishchilar ro'yxati
+                    </h2>
+                    <div class="date">
+                        <button type="button" class="adder">Ishchi qoshish</button>
+                        <button class="excel">
+                            <img class="excel-image" src="https://img.icons8.com/color/48/000000/microsoft-excel-2019.png" alt="Excel">
+                            Excel
+                        </button>
+                        <span></span>
+                    </div>
+                </div>
+
+                <!-- Worker Table -->
+                <table>
+                
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Ismi Familiyasi</th>
+                            <th>ish</th>
+                            <th>Ish soni</th>
+                            <th>ish puli</th>
+                            <th>Qoshilgan vaqti</th>
+                            <th>Boshqalar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for h in history %}
+                        <tr id="worker-{{ worker.id }}">
+                            <td>1</td>
+                            <td>{{ i.last_name }} {{ i.name }}</td>
+                            <td>{{ worker.user.username }}</td>
+                            
+                            <td>
+                            {% for i in worker.progress.all%}
+                            {{ i.work.work_name }},
+                             {% endfor %}
+                             </td>
+                            <td>Tatilda</td>
+                            <td>dd.mm.yyyy</td>
+                            <td class="profile-buttons">
+                                <button type="button" class="more" title="Batafsil">
+                                    <img src="https://img.icons8.com/ios-filled/50/357ABD/visible.png" alt="Batafsil">
+                                </button>
+                                <button type="button" class="change" title="O'zgartirish">
+                                    <img src="https://img.icons8.com/ios-filled/50/357ABD/edit.png" alt="O'zgartirish">
+                                </button>
+                                <button onclick="deleteWorker({{ worker.id }})" type="button" class="delete" title="Royhattan o'chirish">
+                                    <img src="https://img.icons8.com/ios-filled/50/red/trash.png" alt="Royhattan o'chirish">
+                                </button>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        
+                    </tbody>
+                
+                </table>
+            </section>
+        </div>
+    </main>
+
+   <script>
+   document.cookie = "csrftoken={{ csrf_token }}";
+</script> 
+{% comment %} <script src="{% static 'js/admin/showworkers.js' %}"></script> {% endcomment %}
+</body>
+</html>

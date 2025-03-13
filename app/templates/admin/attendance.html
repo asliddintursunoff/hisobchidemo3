@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+{% extends "navbar.html" %}
+{% block content %}
+{% load static %}
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/admin/showworkers.css" %}">
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+     <style>
+    
+    table.attendance {
+      border-collapse: collapse;
+      width: 90%;
+      margin: 20px auto;
+    }
+    table.attendance th,
+    table.attendance td {
+      border: 1px solid #ccc;
+      padding: 5px;
+      text-align: center;
+    }
+    table.attendance th {
+      background-color: #007bff;
+    }
+    .sunday {
+      color: red;
+    }
+    .worker-name {
+      text-align: left;
+      font-weight: bold;
+      background-color: #fafafa;
+    }
+    /* Optional: Style checkboxes (round with red when checked) */
+    input[type="checkbox"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+      width: 18px;
+      height: 18px;
+      border: 2px solid #ccc;
+      border-radius: 50%;
+      outline: none;
+      cursor: pointer;
+      position: relative;
+    }
+    input[type="checkbox"]:checked {
+      background-color:rgb(149, 200, 255);
+      border-color: #007bff;
+    }
+  </style>
+</head>
+<body>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="subheader">
+            <div class="navbar">
+                <button  id="sidebarToggle" class="menu-btn">☰</button>
+                <div class="author">Ism Familiyasi</div>
+                <a href="{% url 'adminpage'  %}"class="logo">Ortga qaytish</a>
+              
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" id="search-input"placeholder="Qidirish...">
+                <button class="search-button">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/search.png" alt="Qidirish">
+                </button>
+            </div>
+        </header>
+    <div id="flash-message" class="flash-message" style="display: none;"></div>
+
+        <!-- Main Container -->
+        <div class="container">
+            <!-- Table Section -->
+            <section class="table-container">
+                <div class="text-excel">
+                    <h2>
+                      <img class="add-workers-icon" src="{% static "icons/attendance.png"%}" alt="Add Workers">
+                        2025 yil Mart oyidagi ishchilar yo'qlamasi
+                    </h2>
+                    
+                </div>
+
+
+             
+  <table class="attendance">
+  
+    <thead>
+    
+      <tr>
+        <th>Worker</th>
+        <!-- Header for days 1 to 31 -->
+        <!-- For demonstration, marking Sundays (assume 5, 12, 19, 26 are Sundays) -->
+        
+        
+        
+            {% for j in for_days.data %}
+              {% if j.day == "Sunday" %}
+                  <th class="sunday">{{ j.date }}</th>
+              {% else %}
+                  <th>{{ j.date }}</th>
+              {% endif %}
+              {% endfor %}
+        {% comment %} <th class="sunday">31</th> {% endcomment %}
+       
+      </tr>
+      
+    </thead>
+    <tbody id="table-body"> 
+      {% for i in attendance %}
+      <!-- Sample row for Worker 1 -->
+      <tr>
+        <td class="worker-name">{{ i.worker }}</td>
+        <!-- Checkboxes for each day; adjust checked attribute as needed -->
+        {% for data in i.data  %}
+       
+        <td><input type="checkbox" id="attendance_{{ data.id }}" name="attendance_id" value="{{ data.id }}"
+                                                    {% if data.is_attend %}checked{% endif %}></td>
+      
+        {% endfor %}
+
+      </tr>
+      {% endfor %}  
+     
+    </tbody>
+     
+  </table>
+     </section>
+        </div>
+
+    </main>
+    
+      <script>
+      document.getElementById("search-input").addEventListener("keyup", function () {
+    let searchQuery = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#table-body tr");
+
+    rows.forEach(row => {
+        let rowText = row.textContent.toLowerCase();
+        row.style.display = rowText.includes(searchQuery) ? "" : "none";
+    });
+});
+document.addEventListener("DOMContentLoaded", function() {
+    document.querySelectorAll("input[type='checkbox']").forEach(function(checkbox) {
+        checkbox.addEventListener("change", function() {
+            let attendanceId = this.value;  // Get checkbox value (data ID)
+            let status = this.checked;  // Get checkbox status (True/False)
+
+            // Prepare data to send
+            let data = {
+                id: attendanceId,
+                status: status
+            };
+
+            // Send data to Django backend
+            fetch("{% url 'attendance_post' %}", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "X-CSRFToken": getCookie("csrftoken") // CSRF token for security
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("Success:", data);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        });
+    });
+
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            let cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                let cookie = cookies[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+});
+</script>
+
+ 
+</body>
+</html>
+{% endblock %}

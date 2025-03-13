@@ -1,0 +1,57 @@
+{% load static %}
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{% static 'css/sidebar.css' %}">
+</head>
+<body>
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h3>{{ request.user.company.name}}</h3>
+            <button class="sidebar-close-btn">&times;</button> <!-- Close button -->
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="{% url "adminpage" %}" class="nav-item"><img src="{% static "icons/menu.png" %}" alt="Dashboard"> Asosiy</a></li>
+            <li><a href="{% url "expanse_view" %}" class="nav-item"><img src="{% static "icons/expanse.png" %}" alt="Ishchilar"> Harajatlar</a></li>
+            <li><a href="{% url "showworkers" %}" class="nav-item"><img src="{% static "icons/group.png" %}"> Ishchilar</a></li>
+            <li><a href="{% url "history" %}" class="nav-item"><img src="{% static "icons/clock.png" %}" alt="Hisobotlar"> Tarix</a></li>
+            <li><a href="{% url "adminsettings" %}" class="nav-item"><img src="{% static "icons/images/malumotlar.png" %}" alt="Sozlamalar"> Korxona malumotlari</a></li>
+        </ul>
+        <!-- Added Company ID Section -->
+        <div class="sidebar-footer">
+            <span>Korxona ID: {{ request.user.company.unique_id }}</span>
+        </div>
+    </nav>
+{% block content %}
+
+{% endblock content %} 
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const sidebar = document.querySelector(".sidebar");
+    const toggleBtn = document.getElementById("sidebarToggle");
+    const closeBtn = document.querySelector(".sidebar-close-btn");
+
+    // Toggle sidebar on button click
+    toggleBtn.addEventListener("click", function (event) {
+        sidebar.classList.toggle("active");
+        event.stopPropagation(); // Prevent click from propagating to document
+    });
+
+    // Close sidebar on close button click
+    closeBtn.addEventListener("click", function () {
+        sidebar.classList.remove("active");
+    });
+
+    // Close sidebar if clicking outside
+    document.addEventListener("click", function (event) {
+        if (!sidebar.contains(event.target) && !toggleBtn.contains(event.target)) {
+            sidebar.classList.remove("active");
+        }
+    });
+});
+
+
+
+</script>
+</body>
+</html>

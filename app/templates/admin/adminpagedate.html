@@ -1,0 +1,156 @@
+{% extends "navbar.html" %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/admin/adminpagedate.css" %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <!-- Flatpickr CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+
+    <!-- Flatpickr JS -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <!-- Uzbek Locale -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/l10n/uz.js"></script>
+    <style>
+    .flash-message {
+        
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        text-align: center;
+    }
+    .flash-message.success {
+        background-color: #d4edda;
+        color: #155724;
+        border: 1px solid #c3e6cb;
+    }
+    .flash-message.danger {
+        background-color: #f8d7da;
+        color: #721c24;
+        border: 1px solid #f5c6cb;
+    }
+
+
+</style>
+</head>
+<body>
+
+    <!-- Sidebar included via iframe -->
+    {% comment %} <iframe src="sidebar.html" frameborder="0" class="sidebar-iframe"></iframe> {% endcomment %}
+<div id="sidebar-container"></div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Subheader -->
+        <header class="subheader">
+            <div class="navbar">
+                <button  id="sidebarToggle" class="menu-btn">☰</button>
+                <div class="author">{{ request.user.first_name}} {{ request.user.last_name}}</div>
+               <div class="logo">
+                    <p>{{ request.user.company.name }}</p>
+                </div>
+                
+            </div>
+            <div class="search-container">
+                <input type="text"id="search-input" class="search-input" placeholder="Qidirish...">
+                <button class="search-button">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/search.png" alt="Qidirish">
+                </button>
+            </div>
+        </header>
+<div id="flash-messages"></div>
+        <!-- Container -->
+        <div class="container">
+            <!-- Table Section -->
+            <form>
+            <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+
+                <section class="table-container">
+                    <div class="dater">
+                        <p class="datetxt">Sanani kiriting</p>
+                        <input type="text" id="monthPicker" class="date" placeholder="Oy tanlang">
+
+                    </div>
+                    <div class="dater">
+                    
+                        <input class="selector1" type="text" name="product_name" value="" class="input1" placeholder="Maxsulot nomi">
+                        {% comment %} <select class="selectormain" name="">
+                            <option value="">Maxsulotni tanlang</option>
+                            <option value="">Maxsulot nomi1</option>
+                            <option value="">Maxsulot nomi2</option>
+                        </select> {% endcomment %}
+                        
+                        <p class="datetxt">Malumot ko‘chirmoqchi bo‘lgan vaqtni kiriting(ixtiyoriy)</p>
+                        <select class="selector1" name="copydate_data">
+                            <option value=""></option> <!-- Default option -->
+                            {% for i in dates %}
+                            <option name = "copy_value_id" value="{{i.date.id}}">{{ i.date.date|date:"F" }} {{ i.date.date|date:"Y" }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    
+                    <div class="button-enter">
+                        <button type="button" name="save-button1" class="button1">Saqlash</button>
+                    </div>
+                </section>
+            </form>
+            
+            <div class="second">
+            
+                {% for date in dates %}
+                <div class="rect1">
+                    <p>{{ date.date.date|date:"F" }} {{ date.year }}</p>
+                    <div class="subrect1">
+                        <ul class="product-list">
+                            {% for j in date.types %}
+                            <li>{{ j.type }} </li>{% endfor %}
+                            
+                        </ul>
+                    </div>
+                    
+                    <div class="button-group">
+                        <button id="downloadingexcell-{{ date.date.id }}" type="button" class="more" title="Batafsil"
+                            onclick="window.location.href='{% url 'admindate_main_to_excel' date.date.id %}'">
+                            <img src="https://img.icons8.com/color/48/000000/microsoft-excel-2019.png" alt="Batafsil">
+                        </button>
+                        <a href = "{% url "adminpaging" date.year date.month  date.types.first.id %}" ><button type="button" class="more" title="Batafsil">
+                            <img src="https://img.icons8.com/ios-filled/50/357ABD/visible.png" alt="Batafsil">
+                        </button></a>
+                        <a href = "{% url "attendance" date.date.id %}" ><button type="button" class="more" title="Batafsil">
+                            <img src="{% static "icons/attendance.png" %}" alt="Batafsil">
+                        </button></a>
+                        <a href = "{% url "salary-get" date.date.id %}" ><button type="button" class="salary" title="Salary">
+                            <img src="{% static "icons/salary.png" %}" alt="Batafsil">
+                        </button></a>
+                        <input type="hidden" name="csrfmiddlewaretoken" value="{{ csrf_token }}">
+                        <button type="button" class="delete" data-id="{{ date.date.id }}" title="Royhattan o'chirish">
+                            <img src="{% static "icons/delete.webp" %}" alt="Royhattan o'chirish">
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+               
+            </div>
+        </div>
+    </main>
+ 
+
+
+<!-- Month Select Plugin -->
+<script src="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/index.js"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/plugins/monthSelect/style.css">
+
+    <script src="{% static "js/admin/adminpagedate.js" %}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+</body>
+</html>
+
+{% endblock %}

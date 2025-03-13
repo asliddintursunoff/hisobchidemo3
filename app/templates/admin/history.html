@@ -1,0 +1,131 @@
+{% extends "navbar.html" %}
+{% block content %}
+{% load static %}
+{% load l10n %}  
+{{ my_datetime|localize }}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/admin/showworkers.css" %}">
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+    <style>/* Style for inline editing input fields */
+/* Smaller input field style */
+.inputs {
+    width: 80%;         /* Adjust width as needed */
+    padding: 5px;       /* Reduced padding */
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;    /* Smaller font size */
+    box-sizing: border-box;
+}
+
+/* Smaller save button style */
+.save-btn {
+    display: block;
+    margin: 10px auto 0; /* Reduced margin */
+    padding: 8px 16px;   /* Smaller padding */
+    background-color: #0d6efd;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 14px;     /* Smaller font size */
+    transition: opacity 0.3s;
+}
+
+.save-btn:hover {
+    opacity: 0.8;
+}
+
+</style>
+
+</head>
+<body>
+
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="subheader">
+            <div class="navbar">
+                <button class="menu-btn" id="sidebarToggle">☰</button>
+                <div class="author">Ism Familiyasi</div>
+                <a href="{% url 'adminpage'  %}"class="logo">Ortga qaytish</a>
+            </div>
+            <div class="search-container">
+                <input type="text" id="search-input" class="search-input" placeholder="Qidirish...">
+                <button class="search-button">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/search.png" alt="Qidirish">
+                </button>
+            </div>
+        </header>
+
+        <!-- Main Container -->
+        <div class="container">
+            <!-- Table Section -->
+            <section class="table-container">
+                <div class="text-excel">
+                    <h2>
+                      <img class="add-workers-icon" src="{% static "icons/clock.png"%}" alt="Add Workers">
+                        {{request.user.company.name}} korxonasining bajarilgan ishlar tarixi
+                    </h2>
+                    
+                </div>
+
+                <!-- Worker Table -->
+                <table>
+                        <thead>
+                            <tr>
+                                <th>№</th>
+                                <th>Ismi Familiyasi</th>
+                                <th>ish</th>
+                                <th>Ish soni</th>
+                                <th>ish puli</th>
+                                <th>Qoshilgan vaqti</th>
+                                <th>Boshqalar</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            {% for h in history %}
+                           
+                            <tr id="progress-{{ h.id }}" data-work-id="{{ h.progress.work.id }}">
+                                <td>{{ forloop.counter }}</td>
+                                <td>{{ h.progress.worker.last_name }} {{ h.progress.worker.name }}</td>
+                                <td class="work-cell">{{ h.progress.work.types.type }} - {{ h.progress.work.work_name }}</td>
+                                <td class="number-cell">{{ h.number }}</td>
+                                <td>{{ h.sum_of_work }}</td>
+                                <td class="date-cell"  >{{ h.date|date:"H:i d/m/Y" }}</td>
+                                <td class="profile-buttons">
+                                    <button type="button" class="change" title="O'zgartirish">
+                                        <img src="https://img.icons8.com/ios-filled/50/357ABD/edit.png" alt="O'zgartirish">
+                                    </button>
+                                    <button onclick="deleteProgress({{ h.id }})" type="button" class="delete" title="Royhattan o'chirish">
+                                        <img src="{% static 'icons/delete.webp' %}" alt="Royhattan o'chirish">
+                                    </button>
+                                </td>
+                            </tr>
+                           
+                            {% endfor %}
+                        </tbody>
+                    </table>
+
+                
+              
+            </section>
+        </div>
+    </main>
+
+   <script>
+   document.cookie = "csrftoken={{ csrf_token }}";
+    const deleteIconUrl = "{% static 'icons/delete.webp' %}";
+    const editIconUrl = "https://img.icons8.com/ios-filled/50/357ABD/edit.png";
+</script> 
+<script src="{% static 'js/admin/history.js' %}"></script>
+</body>
+</html>
+{% endblock %}

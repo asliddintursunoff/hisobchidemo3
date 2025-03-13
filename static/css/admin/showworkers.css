@@ -1,0 +1,445 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+body {
+    background: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding: 1rem;
+}
+
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+}
+
+.subheader {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.navbar {
+    display: flex;
+    align-items: center;
+    background: #407BFF;
+    padding: 0.75rem 1rem;
+    color: white;
+    font-weight: 600;
+    border-radius: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: space-around;
+}
+
+.author {
+    font-size: 14px;
+}
+
+.menu-btn {
+    background: #357ABD;
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+    font-size: 20px;
+}
+
+.menu-btn:hover {
+    background: #0056b3;
+}
+
+.logo {
+    font-size: 1rem;
+    flex-grow: 1;
+    margin-left: 10px;
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background: white;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+    gap: 0.5rem;
+}
+
+.search-input {
+    border: none;
+    outline: none;
+    padding: 0.5rem;
+    font-size: 1rem;
+    flex: 1;
+    background-color: #f5f5f5;
+    border-radius: 0.3rem;
+}
+
+.search-button {
+    background: #407BFF;
+    border: none;
+    padding: 0.5rem;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.search-button:hover {
+    background: #0056b3;
+}
+
+.search-button img {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 50px;
+}
+
+.table-container {
+    background: #f5f5f5;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.25rem 0.375rem rgba(0, 0, 0, 0.1);
+    overflow-x: auto;
+}
+
+.text-excel {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.text-excel h2 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.date {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    flex-direction: row;
+    align-items: center;
+}
+.date-excel {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+}
+
+
+.excel {
+    padding: 0.5rem 1rem;
+    background-color: white;
+    color: #008000;
+    border: 1px solid #008000;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    font-weight: 600;
+    display: flex;
+    justify-content: center;
+    gap: 5px;
+    transition: all 0.3s ease;
+}
+
+.excel-image {
+    width: 24px;
+    height: 24px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    padding: 0.75rem;
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background: #407BFF;
+    color: white;
+    font-size: 0.9rem;
+}
+
+.profile-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+.expanseadder,
+.adder {
+    padding: 0.65rem 1rem;
+    background-color: white;
+    color: #407BFF;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    border: 1px solid #407BFF;
+    cursor: pointer;
+    justify-content: center;
+}
+.more,
+.change,
+.delete {
+    border: none;
+    background-color: #ffffff;
+    padding: 8px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.more {
+    color: #357ABD;
+}
+
+.change {
+    color: #357ABD;
+}
+
+.delete {
+    color: #e63946;
+}
+
+.more:hover,
+.change:hover {
+    background-color: #e6f0ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.delete:hover {
+    background-color: #ffe6e6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+.expanseadder:hover,
+.adder:hover {
+    background-color: #e6f0ff;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.excel:hover {
+    background-color: #e9ffe6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.more img,
+.change img,
+.delete img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.add-workers-icon {
+    width: 32px;
+    height: 32px;
+    vertical-align: middle;
+    margin-left: 8px;
+    transition: opacity 0.3s;
+}
+
+.add-workers-icon:hover {
+    opacity: 0.7;
+}
+
+@media (min-width: 768px) {
+    body {
+        padding: 2rem;
+    }
+
+    .subheader {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .navbar {
+        padding: 1rem;
+        flex-wrap: nowrap;
+    }
+
+    .logo {
+        text-align: right;
+        margin-left: 460px;
+    }
+
+    .search-container {
+        width: 35rem;
+        height: 5rem;
+    }
+}
+    
+
+@media (max-width: 767px) {
+    .table-container {
+        font-size: 0.9rem;
+    }
+}
+
+
+.flash-message {
+    display: none;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    text-align: center;
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1000;
+}
+
+.flash-message.success {
+    background-color: #4CAF50;
+    color: white;
+}
+
+.flash-message.error {
+    background-color: #f44336;
+    color: white;
+}
+
+
+/*modal*/
+/* Background overlay */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000; /* Ensures it's on top */
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Dark transparent overlay */
+    display: flex;
+    align-items: center; /* Center vertically */
+    justify-content: center; /* Center horizontally */
+}
+
+/* Modal content */
+.modal-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+    width: 400px; /* Adjust width */
+    max-width: 90%; /* Makes it responsive */
+    text-align: center;
+    position: relative;
+    animation: fadeIn 0.3s ease-in-out; /* Smooth opening animation */
+}
+
+/* Close button */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 15px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+/* Animation for smooth fade-in */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+.close:hover {
+    color: red;
+}
+
+
+.save-btn {
+    background: #407BFF;
+    color: white;
+    padding: 0.75rem;
+    width: 100%;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.save-btn:hover {
+    background: #357ABD;
+}
+
+
+.delete-btn {
+    background: #ff1c1c;
+    color: white;
+    padding: 0.75rem;
+    width: 100%;
+    border: none;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.3s;
+}
+
+.delete-btn:hover {
+    background: #d24949;
+}
+
+
+.inputs {
+    width: 4rem;
+    padding: 0.25rem;
+    border: 1px solid #ddd;
+    border-radius: 0.3rem;
+    text-align: center;
+}
+
+
+
+input, select {
+    width: 100%;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    border: 1px solid #ddd;
+    border-radius: 0.3rem;
+    font-size: 1rem;
+}

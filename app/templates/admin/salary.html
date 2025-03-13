@@ -1,0 +1,294 @@
+{% extends "navbar.html" %}
+{% block content %}
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Worker Page</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static "css/admin/showworkers.css" %}">
+    <script src="https://unpkg.com/htmx.org@1.9.4"></script>
+</head>
+<body>
+
+
+     <div id="sidebar-container"></div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="subheader">
+            <div class="navbar">
+                <button  id="sidebarToggle" class="menu-btn">☰</button>
+                <div class="author">Ism Familiyasi</div>
+                <a href="{% url 'adminpage'  %}"class="logo">Ortga qaytish</a>
+              
+            </div>
+            <div class="search-container">
+                <input type="text" class="search-input" id="search-input" placeholder="Qidirish...">
+                <button class="search-button">
+                    <img src="https://img.icons8.com/ios-filled/50/ffffff/search.png" alt="Qidirish">
+                </button>
+            </div>
+        </header>
+            <div id="flash-message" class="flash-message" style="display: none;"></div>
+
+        <!-- Main Container -->
+        <div class="container">
+            <!-- Table Section -->
+            <section class="table-container">
+                <div class="text-excel">
+                    <h2>
+                      <img class="add-workers-icon" src="{% static "icons/salary.png"%}" alt="Add Workers">
+                        Ishchilarningning oylik malumotlari
+                    </h2>
+                    
+                    <div class="date-excel">
+                        <div class="date">{{date.date|date:"F"}} {{ date.date.year }}</div>
+                        <button id = "salaryexcell"class="excel">
+                            <img class="excel-image" src="https://img.icons8.com/color/48/000000/microsoft-excel-2019.png" alt="Excel">
+                            Excel
+                        </button>
+                    </div>
+                </div>
+                                                    
+                                                    <!-- Button to Open Modal -->
+
+                                {% comment %} 
+                                <!-- Modal -->
+                                <div id="modal-add-workers" class="modal">
+                                    <div class="modal-content">
+                                        <span id="close-add-items" class="close">&times;</span>
+                                        <h2>Yangi ishchi qo‘shish</h2>
+
+                                        <!-- Form -->
+                                        <form id="form-add-worker">
+                                            {% csrf_token %}
+                                            <label for="worker_name">Ism</label>
+                                            <input type="text" name="worker_name" placeholder="Ism" required>
+
+                                            <label for="worker_last_name">Familiya</label>
+                                            <input type="text" name="worker_last_name" placeholder="Familiya">
+
+                                            <!-- Save Button -->
+                                            <button class="save-btn" type="submit" id="btn-save-worker" data-url="{% url 'createworker' %}">
+                                                Saqlash
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div> {% endcomment %}
+
+
+
+                
+
+                <!-- Worker Table -->
+                <table>
+                
+                    <thead>
+                        <tr>
+                            <th>№</th>
+                            <th>Ismi Familiyasi</th>
+                            <th>Kelgan kunlar</th>
+                            {% for expanse in expanses %}
+                            <th>{{expanse.expanse  }}</th>
+                            {% endfor %}
+                            <th>Qilingan ish</th>
+                            <th>Avans</th>
+                            <th>Premya</th>
+                            
+                            <th>Qo'lga tegishi</th>
+                            
+                            {% comment %} <th>Boshqalar</th> {% endcomment %}
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        {% for worker in workers %}
+                        <tr id="worker-{{ worker.id }}">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ worker.worker }}</td>
+                            <td>{{ worker.total_days }}</td>
+                            {% for i in worker.calculating_expanses %}
+                                <td>{{ i.expanse_sum }}</td>
+                            {% endfor %}
+                            <td>{{ worker.done_money }}</td>
+                        <!-- Avans -->
+                            <td class="editable-cell" onclick="showForm(this)">
+                                <span class="number-display">
+                                    <p>{{ worker.avans }}</p>
+                                </span>
+
+                                <form method="post" class="edit-form" style="display: none;" 
+                                    onsubmit="submitAvans(event, this, '{{ worker.worker_id }}')">
+                                    {% csrf_token %}
+                                    <input class="inputs" type="number" name="numberavans" value="0" step="1">
+                                    <input type="hidden" name="dateid" value="{{ date.id }}">
+                                    <button class="save-btn" type="submit">Saqlash</button>
+                                </form>
+                            </td>
+
+                            <!-- Premya -->
+                            <td class="editable-cell" onclick="showForm(this)">
+                                <span class="number-display">
+                                    <p>{{ worker.premya }}</p>
+                                </span>
+
+                                <form method="post" class="edit-form" style="display: none;" 
+                                    onsubmit="submitPremya(event, this, '{{ worker.worker_id }}')">
+                                    {% csrf_token %}
+                                    <input class="inputs" type="number" name="numberpremya" value="0" step="1">
+                                    <input type="hidden" name="dateid" value="{{ date.id }}">
+                                    <button class="save-btn" type="submit">Saqlash</button>
+                                </form>
+                            </td>
+
+
+                          
+                            <td>{{ worker.full_money }}</td>
+                        
+                        {% comment %}                             
+                            <td class="profile-buttons">
+                                
+                                <button type="button" class="change" title="O'zgartirish">
+                                    <img src="https://img.icons8.com/ios-filled/50/357ABD/edit.png" alt="O'zgartirish">
+                                </button>
+                                
+                            </td> {% endcomment %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                
+                </table>
+            </section>
+        </div>
+    </main>
+
+<script>
+document.getElementById("search-input").addEventListener("keyup", function () {
+    let searchQuery = this.value.toLowerCase();
+    let rows = document.querySelectorAll("#table-body tr");
+
+    rows.forEach(row => {
+        let rowText = row.textContent.toLowerCase();
+        row.style.display = rowText.includes(searchQuery) ? "" : "none";
+    });
+});
+document.getElementById("salaryexcell").addEventListener("click", function() {
+        window.location.href = "{% url 'salary-excell' date.id  %}";
+    });
+
+document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("click", function (event) {
+        const allForms = document.querySelectorAll(".edit-form");
+        let clickedInside = false;
+
+        // Check if clicked inside any .editable-cell
+        document.querySelectorAll(".editable-cell").forEach(td => {
+            if (td.contains(event.target)) {
+                clickedInside = true;
+            }
+        });
+
+        if (!clickedInside) {
+            allForms.forEach(form => form.style.display = "none");
+        }
+    });
+});
+
+// ✅ Function to Show Form
+function showForm(element) {
+    const td = element.closest("td");
+    const form = td.querySelector(".edit-form");
+    const numberDisplay = td.querySelector(".number-display");
+
+    // Hide all other forms before opening the clicked one
+    document.querySelectorAll(".edit-form").forEach(f => f.style.display = "none");
+    document.querySelectorAll(".number-display").forEach(n => n.style.display = "block");
+
+    // Toggle display: Hide number, show form
+    numberDisplay.style.display = "none";
+    form.style.display = "block";
+    form.querySelector("input[type='number']").focus(); // Auto-focus input
+}
+
+// ✅ Function to Submit Avans Form
+function submitAvans(event, form, workerId) {
+    event.preventDefault();
+
+    const numberAvans = form.querySelector("input[name='numberavans']").value;
+    const dateId = form.querySelector("input[name='dateid']").value;
+
+    const data = {
+        worker_id: workerId,
+        dateid: dateId,
+        numberavans: parseInt(numberAvans)
+    };
+
+    fetch("/post-avans/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken()
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log("Avans saved successfully!");
+        } else {
+            console.log("Error: " + data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+
+    location.reload();
+}
+
+// ✅ Function to Submit Premya Form
+function submitPremya(event, form, workerId) {
+    event.preventDefault();
+
+    const numberPremya = form.querySelector("input[name='numberpremya']").value;
+    const dateId = form.querySelector("input[name='dateid']").value;
+
+    const data = {
+        worker_id: workerId,
+        dateid: dateId,
+        numberpremya: parseInt(numberPremya)
+    };
+
+    fetch("/post-premya/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": getCSRFToken()
+        },
+        body: JSON.stringify(data)
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            console.log("Premya saved successfully!");
+        } else {
+            console.log("Error: " + data.error);
+        }
+    })
+    .catch(error => console.error("Error:", error));
+
+    location.reload();
+}
+
+// ✅ CSRF Token Helper Function
+function getCSRFToken() {
+    return document.querySelector("[name=csrfmiddlewaretoken]").value;
+}
+
+
+</script>
+
+
+</body>
+</html>
+{% endblock content %}
